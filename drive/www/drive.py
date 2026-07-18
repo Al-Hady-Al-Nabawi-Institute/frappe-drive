@@ -13,6 +13,18 @@ def get_context():
     csrf_token = frappe.sessions.get_csrf_token()
     frappe.db.commit()
     context = frappe._dict()
+    # The shell's lang/dir (index.html) must use the SAME language source as
+    # drive.api.product.get_translations (User.language), or an Arabic user on
+    # an English-locale browser gets RTL strings in an LTR shell — frappe's
+    # default website lang comes from Accept-Language, not the User doc.
+    if frappe.session.user != "Guest":
+        context.lang = (
+            frappe.db.get_value("User", frappe.session.user, "language")
+            or frappe.db.get_single_value("System Settings", "language")
+            or "en"
+        )
+    else:
+        context.lang = frappe.db.get_single_value("System Settings", "language") or "en"
     context.boot = get_boot()
     context.boot.csrf_token = csrf_token
     context.csrf_token = csrf_token
