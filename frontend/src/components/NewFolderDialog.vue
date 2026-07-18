@@ -2,11 +2,11 @@
   <Dialog
     v-model="open"
     :options="{
-      title: 'Create a Folder',
+      title: __('Create a Folder'),
       size: 'xs',
       actions: [
         {
-          label: 'Create',
+          label: __('Create'),
           variant: 'solid',
           disabled: folderName.length === 0,
           loading: createFolder.loading,
@@ -20,7 +20,7 @@
       <FormControl
         v-model="folderName"
         v-focus
-        label="Name:"
+        :label="__('Name:')"
         @keyup.enter="submit"
         @keydown="createFolder.error = null"
       >
@@ -73,5 +73,11 @@ const createFolder = createResource({
     emit("success", data)
   },
 })
-const submit = () => createFolder.submit(folderName.value.trim())
+// Guard against double-submit: Enter on the input and the Create button both
+// call this, and `loading` only disables the button — on a slow link the
+// second trigger lands before the first response and creates the folder twice.
+const submit = () => {
+  if (createFolder.loading) return
+  createFolder.submit(folderName.value.trim())
+}
 </script>

@@ -23,7 +23,7 @@
           draggedSpace === item.label &&
           'ring-1 ring-outline-gray-3 !bg-surface-gray-3'
         "
-        :label="item.label"
+        :label="__(item.label)"
         :accessKey="item.accessKey"
         :icon="item.icon"
         :suffix="item.suffix"
@@ -218,7 +218,11 @@ const sidebarItems = computed(() => {
       ],
     },
     {
-      label: "Drive",
+      // Group labels are rendered raw inside frappe-ui's Sidebar, so they are
+      // translated here in the data; ITEM labels stay raw English because the
+      // drag/drop + draggedSpace logic compares them — SidebarItem's slot
+      // translates those at render time (__(item.label) above).
+      label: __("Drive"),
       items: [
         {
           label: "Home",
@@ -250,7 +254,7 @@ const sidebarItems = computed(() => {
       ],
     },
     {
-      label: "Teams",
+      label: __("Teams"),
       cond: getTeams.data && Object.keys(getTeams.data).length > 0,
       collapsible: true,
       items:
@@ -264,7 +268,7 @@ const sidebarItems = computed(() => {
         })),
     },
     {
-      label: "Views",
+      label: __("Views"),
       collapsible: true,
       items: dynamicList([
         {

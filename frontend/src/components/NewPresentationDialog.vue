@@ -2,11 +2,11 @@
   <Dialog
     v-model="open"
     :options="{
-      title: 'New Presentation',
+      title: __('New Presentation'),
       size: 'xs',
       actions: [
         {
-          label: 'Create',
+          label: __('Create'),
           variant: 'solid',
           disabled: presentationName.length === 0,
           loading: createPresentation.loading,
@@ -20,7 +20,7 @@
       <FormControl
         v-model="presentationName"
         v-focus
-        label="Name:"
+        :label="__('Name:')"
         @keyup.enter="submit"
         @keydown="createPresentation.error = null"
         autocomplete="off"
@@ -57,7 +57,7 @@ const open = ref(true)
 
 const presentationName = ref("")
 const submit = async () => {
-  if (!presentationName.value) return
+  if (!presentationName.value || createPresentation.loading) return
   const data = await createPresentation.submit({
     parent: props.parent,
     title: presentationName.value.trim(),

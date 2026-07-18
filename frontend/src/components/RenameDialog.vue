@@ -2,11 +2,11 @@
   <Dialog
     v-model="open"
     :options="{
-      title: 'Rename',
+      title: __('Rename'),
       size: 'xs',
       actions: [
         {
-          label: 'Confirm',
+          label: __('Confirm'),
           variant: 'solid',
           disabled: !newTitle || newTitle === entity.title,
           onClick: submit,
@@ -62,6 +62,7 @@ if (props.entity.is_group || props.entity.document) {
 }
 
 const submit = () => {
+  if (rename.loading) return
   const formattedTitle =
     newTitle.value + (file_ext.value ? "." + file_ext.value : "")
   rename.submit({

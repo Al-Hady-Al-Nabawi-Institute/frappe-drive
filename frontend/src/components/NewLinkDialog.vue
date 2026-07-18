@@ -2,14 +2,14 @@
   <Dialog
     v-model="open"
     :options="{
-      title: 'New Link',
+      title: __('New Link'),
       size: 'xs',
       actions: [
         {
-          label: 'Create',
+          label: __('Create'),
           variant: 'solid',
           loading: createLink.loading,
-          onClick: createLink.submit,
+          onClick: submit,
         },
       ],
     }"
@@ -20,15 +20,15 @@
         <FormControl
           v-model="title"
           v-focus
-          label="Link name"
+          :label="__('Link name')"
           type="text"
           @keydown="createLink.error = null"
         />
         <FormControl
           v-model="link"
-          label="URL"
+          :label="__('URL')"
           type="url"
-          @keydown.enter="createLink.submit"
+          @keydown.enter="submit"
           @keydown="createLink.error = null"
         />
       </div>
@@ -80,4 +80,11 @@ const createLink = createResource({
     emit("success", data)
   },
 })
+
+// Guard against double-submit (Enter + button on a slow link) — same bug as
+// NewFolderDialog.
+const submit = () => {
+  if (createLink.loading) return
+  createLink.submit()
+}
 </script>
