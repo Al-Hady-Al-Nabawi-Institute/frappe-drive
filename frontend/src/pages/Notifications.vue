@@ -3,7 +3,7 @@
     class="bg-surface-white border-b w-full px-5 py-2.5 h-12 flex items-center justify-between"
   >
     <div
-      class="bg-surface-gray-2 rounded-[10px] space-x-0.5 h-7 flex items-center px-0.5 py-1"
+      class="bg-surface-gray-2 rounded-[10px] space-x-0.5 rtl:space-x-reverse h-7 flex items-center px-0.5 py-1"
     >
       <TabButtons
         v-model="onlyUnread"
@@ -20,7 +20,7 @@
       <Button
         :loading="notifications.loading"
         icon="refresh-ccw"
-        class="mr-2"
+        class="me-2"
         @click="notifications.reload()"
       />
       <Button

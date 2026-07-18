@@ -25,7 +25,7 @@
               <div class="text-ink-gray-7 text-base">
                 {{ shortcut[1] }}
               </div>
-              <div class="flex space-x-1 w-[9rem] gap-1 justify-start">
+              <div class="flex space-x-1 rtl:space-x-reverse w-[9rem] gap-1 justify-start">
                 <span
                   v-for="(key, kIndex) in shortcut[0]"
                   :key="kIndex"

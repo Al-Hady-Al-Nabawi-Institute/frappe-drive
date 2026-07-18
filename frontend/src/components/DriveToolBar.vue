@@ -10,7 +10,7 @@
     </div>
     <div
       v-else-if="$route.name === 'Shared'"
-      class="bg-surface-gray-2 rounded-[10px] space-x-0.5 h-7 flex items-center px-0.5 mr-4 py-1"
+      class="bg-surface-gray-2 rounded-[10px] space-x-0.5 rtl:space-x-reverse h-7 flex items-center px-0.5 me-4 py-1"
     >
       <TabButtons
         v-model="shareView"
@@ -45,21 +45,21 @@
       </template>
     </TextInput>
 
-    <div class="flex gap-2 ml-auto my-auto">
+    <div class="flex gap-2 ms-auto my-auto">
       <template v-if="!selections?.length">
         <div
           v-if="activeFilters.length"
-          class="flex flex-wrap items-start justify-end gap-1 ml-3"
+          class="flex flex-wrap items-start justify-end gap-1 ms-3"
         >
           <div
             v-for="({ icon, name }, index) in activeFilters"
             :key="index"
           >
             <div
-              class="flex items-center border rounded pl-2 py-1 h-7 text-base select-none"
+              class="flex items-center border rounded ps-2 py-1 h-7 text-base select-none"
             >
               <img :src="icon" />
-              <span class="text-sm ml-2">{{ name }}</span>
+              <span class="text-sm ms-2">{{ name }}</span>
               <Button
                 variant="minimal"
                 :icon="h(LucideX, { class: 'size-3' })"
@@ -71,7 +71,7 @@
         <Button
           v-if="getEntities.loading"
           :loading="true"
-          label="Loading..."
+          :label="__('Loading...')"
         />
         <TeamSelector
           v-if="
@@ -103,7 +103,7 @@
         >
           <div class="flex items-center whitespace-nowrap">
             <Button
-              class="text-sm h-7 border-r border-slate-200 rounded-r-none"
+              class="text-sm h-7 border-e border-slate-200 rounded-e-none"
               :disabled
               @click.stop="toggleAscending"
             >
@@ -120,7 +120,7 @@
             </Button>
 
             <Button
-              class="text-sm h-7 rounded-l-none flex-1"
+              class="text-sm h-7 rounded-s-none flex-1"
               :disabled
             >
               <div class="flex items-center gap-2">
@@ -151,7 +151,7 @@
       </template>
       <div
         v-else-if="actionItems"
-        class="flex gap-3 ml-4 overflow-auto"
+        class="flex gap-3 ms-4 overflow-auto"
       >
         <template
           v-for="item in actionItems

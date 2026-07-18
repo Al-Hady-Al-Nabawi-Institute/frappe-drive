@@ -9,16 +9,16 @@
         :style="{ height: '80vh' }"
       >
         <div
-          class="flex w-52 shrink-0 flex-col bg-surface-menu-bar py-3 p-4 border-r"
+          class="flex w-52 shrink-0 flex-col bg-surface-menu-bar py-3 p-4 border-e"
         >
           <div class="flex justify-between items-center">
-            <h1 class="text-xl font-semibold leading-6 text-ink-gray-9 pr-2">
+            <h1 class="text-xl font-semibold leading-6 text-ink-gray-9 pe-2">
               {{ __("Settings") }}
             </h1>
             <!-- <Button
-              class="ml-auto text-sm"
+              class="ms-auto text-sm"
               variant="ghost"
-              label="Exit"
+              :label="__('Exit')"
               @click="$emit('update:modelValue', false)"
             /> -->
           </div>
@@ -75,28 +75,28 @@ import BackendSettings from "./BackendSettings.vue"
 
 const tabs = [
   {
-    label: "Profile",
+    label: __("Profile"),
     icon: LucideUser,
     component: markRaw(ProfileSettings),
   },
   {
-    label: "Teams",
+    label: __("Teams"),
     icon: LucideUserPlus,
     component: markRaw(UserListSettings),
   },
   {
-    label: "Statistics",
+    label: __("Statistics"),
     icon: LucideChartBar,
     component: markRaw(StorageSettings),
   },
   {
-    label: "Tags",
+    label: __("Tags"),
     icon: LucideTag,
     component: markRaw(TagSettings),
   },
   {
     enabled: computed(() => isAdmin.data?.is_admin || false),
-    label: "Storage",
+    label: __("Storage"),
     icon: LucideCloudCog,
     component: markRaw(BackendSettings),
   },

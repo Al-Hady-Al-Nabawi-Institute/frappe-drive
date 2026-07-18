@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+{#- rendered server-side by frappe's website engine (this file is emitted as
+    drive/www/drive.html); `lang` comes from the session user's language -#}
+<html lang="{{ lang or 'en' }}" dir="{{ 'rtl' if lang in ('ar', 'fa', 'he', 'ur') else 'ltr' }}">
   <head>
     <meta charset="UTF-8" />
     <!-- HTML Meta Tags -->

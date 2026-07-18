@@ -1,5 +1,5 @@
 <template>
-  <div class="hidden md:flex right-3 absolute">
+  <div class="hidden md:flex end-3 absolute">
     <div
       v-show="show"
       class="p-2 table-of-contents bg-white shadow-lg rounded-sm max-h-96 overflow-auto pt-1"
@@ -29,7 +29,7 @@
     <Button
       variant="ghost"
       :tooltip="show ? 'Hide' : 'Table of Contents'"
-      class="!w-5.5 !h-5.5 mr-1.5 ml-1"
+      class="!w-5.5 !h-5.5 me-1.5 ms-1"
       @click="show = !show"
     >
       <template #icon>

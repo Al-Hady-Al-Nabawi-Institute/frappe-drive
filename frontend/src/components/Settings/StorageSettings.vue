@@ -10,7 +10,7 @@
         formatPercent((usedSpace / spaceLimit) * 100)
       }})</span>
     <div
-      class="bg-surface-gray-2 rounded-[10px] space-x-0.5 h-7 flex items-center px-0.5 py-1"
+      class="bg-surface-gray-2 rounded-[10px] space-x-0.5 rtl:space-x-reverse h-7 flex items-center px-0.5 py-1"
     >
       <TabButtons
         v-model="showFileStorage"
@@ -50,7 +50,7 @@
   </div>
   <div
     v-if="usedSpace > 0"
-    class="w-full flex justify-start items-start bg-surface-menu-bar border rounded overflow-clip h-7 pl-0 mb-4"
+    class="w-full flex justify-start items-start bg-surface-menu-bar border rounded overflow-clip h-7 ps-0 mb-4"
   >
     <Tooltip
       v-for="[file_kind, i] in storageBreakdown.data?.total"
@@ -101,14 +101,14 @@
       <img :src="getIconUrl(i.file_type)">
       <span class="text-ink-gray-8 text-sm truncate">{{ i.title }}</span>
 
-      <div class="text-ink-gray-8 text-sm ml-auto flex gap-2 h-10 leading-10">
+      <div class="text-ink-gray-8 text-sm ms-auto flex gap-2 h-10 leading-10">
         <Button
           v-if="hoveredRow === i.name"
           variant="ghost"
           class="self-center"
           @click="openEntity(i), $emit('close')"
         >
-          <LucideArrowRight class="size-4 text-ink-gray-5" />
+          <LucideArrowRight class="size-4 text-ink-gray-5 rtl:rotate-180" />
         </Button>
         {{ formatSize(i.file_size) }}
       </div>

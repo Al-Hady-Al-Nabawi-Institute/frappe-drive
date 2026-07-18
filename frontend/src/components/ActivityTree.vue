@@ -37,7 +37,7 @@
                 :strike-through="true"
               />
 
-              <ArrowRight class="text-ink-gray-4 h-4" />
+              <ArrowRight class="text-ink-gray-4 h-4 rtl:rotate-180" />
               <ActivityTreeItem
                 :activity="activity"
                 :entity="entity"

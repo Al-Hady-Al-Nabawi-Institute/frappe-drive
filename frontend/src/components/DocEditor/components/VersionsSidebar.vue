@@ -16,7 +16,7 @@
       <Button
         :icon="LucideX"
         variant="ghost"
-        class="absolute right-1 top-2"
+        class="absolute end-1 top-2"
         @click="clearSnapshot"
       />
     </div>
@@ -24,7 +24,7 @@
       <Button
         v-if="tab === 1"
         :icon="LucidePlus"
-        class="absolute right-3 bottom-3"
+        class="absolute end-3 bottom-3"
         variant="outline"
         @click="
           clearSnapshot(),

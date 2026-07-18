@@ -16,7 +16,7 @@
         class="w-full px-10 py-5 flex-grow w-full flex justify-center align-center items-center relative"
       >
         <Button
-          class="text-ink-gray-8 absolute top-4 left-4"
+          class="text-ink-gray-8 absolute top-4 start-4"
           :variant="'ghost'"
           icon="arrow-left"
           @click="closePreview"

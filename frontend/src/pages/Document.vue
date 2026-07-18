@@ -63,7 +63,7 @@
           :to="$store.state.breadcrumbs?.[0]?.route"
           class="cursor-pointer"
         >
-          <LucideArrowLeft class="size-3.5" />
+          <LucideArrowLeft class="size-3.5 rtl:rotate-180" />
         </router-link>
       </Button>
     </template>

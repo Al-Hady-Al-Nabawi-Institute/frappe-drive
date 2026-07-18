@@ -20,7 +20,7 @@
             </template>
           </div>
           <Button
-            class="ml-auto"
+            class="ms-auto"
             variant="ghost"
             @click="dialogType = ''"
           >
@@ -76,7 +76,7 @@
                       />
                       <LucideChevronRight
                         v-else-if="hasChildren"
-                        class="size-3.5"
+                        class="size-3.5 rtl:rotate-180"
                       />
                       <div
                         v-else
@@ -84,7 +84,7 @@
                       />
                     </div>
                     <div
-                      class="flex-grow rounded-sm text-base truncate h-full flex items-center pl-1"
+                      class="flex-grow rounded-sm text-base truncate h-full flex items-center ps-1"
                       :class="[
                         selected === node.value
                           ? 'bg-surface-gray-3'
@@ -96,11 +96,11 @@
                     >
                       <LucideFolderClosed
                         v-if="isCollapsed"
-                        class="mr-1 size-4"
+                        class="me-1 size-4"
                       />
                       <LucideFolder
                         v-else
-                        class="mr-1 size-4"
+                        class="me-1 size-4"
                       />
                       <div
                         v-if="node.value === null"
@@ -124,7 +124,7 @@
                         ></span
                       >
                       <Button
-                        class="shrink hidden group-hover:block ml-auto"
+                        class="shrink hidden group-hover:block ms-auto"
                         :class="{
                           '!bg-surface-gray-3': selected === node.value,
                         }"
@@ -168,7 +168,7 @@
         </Tabs>
         <div class="flex items-center justify-between pt-4">
           <div class="flex items-center my-auto justify-start">
-            <p class="text-sm pr-0.5">Moving to:</p>
+            <p class="text-sm pe-0.5">Moving to:</p>
             <Dropdown
               v-if="dropDownBreadcrumbs.length"
               class="h-7"
@@ -211,7 +211,7 @@
           </div>
           <Button
             variant="solid"
-            class="ml-auto"
+            class="ms-auto"
             size="sm"
             :disabled="isMoveDisabled"
             :loading="move.loading"
@@ -272,7 +272,7 @@ console.log(route.params)
 const chosenTeam = ref(route.params.team || "")
 const tree = reactive({
   name: "",
-  label: "Home",
+  label: __("Home"),
   children: [],
   options: {
     isCollapsed: true,
@@ -282,16 +282,16 @@ const tree = reactive({
 // State variables
 const selected = ref("")
 const breadcrumbs = ref([
-  { name: "", title: in_home ? "Home" : "Team", is_private: in_home ? 1 : 0 },
+  { name: "", title: in_home ? __("Home") : __("Team"), is_private: in_home ? 1 : 0 },
 ])
 
 const tabs = [
   {
-    label: "Home",
+    label: __("Home"),
     icon: h(LucideHome, { class: "size-4" }),
   },
   {
-    label: "Teams",
+    label: __("Teams"),
     icon: h(LucideBuilding2, { class: "size-4" }),
   },
   // {
@@ -369,7 +369,7 @@ watch(
     switch (newValue) {
       case 0:
         chosenTeam.value = ""
-        breadcrumbs.value = [{ name: "", title: "Home", is_private: 1 }]
+        breadcrumbs.value = [{ name: "", title: __("Home"), is_private: 1 }]
         fetchFolderContents(tree)
         break
       case 1:
@@ -441,7 +441,7 @@ const createFolder = createResource({
   onError() {
     toast({
       type: "error",
-      title: "There is already a folder with this name here.",
+      title: __("There is already a folder with this name here."),
     })
   },
 })

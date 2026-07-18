@@ -1,9 +1,9 @@
 <template>
   <div
-    class="text-ink-gray-8 flex flex-col items-start fixed bottom-0 right-0 m-5 w-96 z-1 rounded-2xl overflow-hidden shadow-2xl dark:border 500 bg-surface-white p-4"
+    class="text-ink-gray-8 flex flex-col items-start fixed bottom-0 end-0 m-5 w-96 z-1 rounded-2xl overflow-hidden shadow-2xl dark:border 500 bg-surface-white p-4"
   >
     <div
-      class="flex items-center justify-between w-full pr-1.5"
+      class="flex items-center justify-between w-full pe-1.5"
       :class="[collapsed ? 'cursor-pointer' : 'mb-4']"
       @click="collapsed = false"
     >
@@ -11,24 +11,24 @@
         v-if="uploadsInProgress.length > 0"
         class="font-medium truncate text-lg"
       >
-        Uploading {{ uploadsInProgress.length }}
-        {{ uploadsInProgress.length == 1 ? "file" : "files" }}
+        {{ __("Uploading") }} {{ uploadsInProgress.length }}
+        {{ uploadsInProgress.length == 1 ? __("file") : __("files") }}
       </div>
       <div
         v-else-if="uploadsCompleted.length > 0"
         class="font-medium truncate text-lg"
       >
         {{ uploadsCompleted.length }}
-        {{ uploadsCompleted.length == 1 ? "file" : "files" }} uploaded
+        {{ uploadsCompleted.length == 1 ? __("file uploaded") : __("files uploaded") }}
       </div>
       <div
         v-else-if="uploadsFailed.length > 0"
         class="font-medium truncate text-lg"
       >
         {{ uploadsFailed.length }}
-        {{ uploadsFailed.length == 1 ? "upload" : "uploads" }} failed
+        {{ uploadsFailed.length == 1 ? __("upload failed") : __("uploads failed") }}
       </div>
-      <div class="ml-auto flex items-center gap-4">
+      <div class="ms-auto flex items-center gap-4">
         <button
           class="focus:outline-none"
           @click.stop="collapsed = !collapsed"
@@ -63,7 +63,7 @@
         >
           <div class="flex items-center justify-between w-full">
             <div class="flex justify-start items-center w-full max-w-[80%]">
-              <LucideFile class="size-4 mr-2" />
+              <LucideFile class="size-4 me-2" />
               <p class="truncate text-sm leading-6 col-span-1 row-span-1">
                 {{ upload.name }}
               </p>
@@ -99,7 +99,7 @@
       v-if="showErrorDialog"
       v-model="showErrorDialog"
       :options="{
-        title: 'Upload failed',
+        title: __('Upload failed'),
         message: selectedUpload.error,
         size: 'sm',
         actions: [
