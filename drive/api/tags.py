@@ -115,10 +115,13 @@ def delete_tag(tag):
 
     :param tag: Tag name
     """
-    EntityTag = frappe.qb.DocType("Drive File Tag")
+    # The entity↔tag link table is "Drive Entity Tag" (the child table behind
+    # Drive File.tags). "Drive File Tag" does not exist, so this endpoint used
+    # to throw on every call and never unlinked the tag from its files.
+    EntityTag = frappe.qb.DocType("Drive Entity Tag")
     query = frappe.qb.from_(EntityTag).select(EntityTag.name).where(EntityTag.tag == tag)
     result = query.run(as_dict=True)
     for i in result:
-        frappe.delete_doc("Drive File Tag", i.name)
+        frappe.delete_doc("Drive Entity Tag", i.name)
     frappe.delete_doc("Drive Tag", tag)
     return result

@@ -631,13 +631,16 @@ def stream_file_content(entity_name):
     size = entity.file_size
     byte1, byte2 = 0, None
 
-    m = re.search("(\d+)-(\d*)", range_header)
-    g = m.groups()
-
-    if g[0]:
-        byte1 = int(g[0])
-    if g[1]:
-        byte2 = int(g[1])
+    # Range may be absent (a plain GET) or unparseable (e.g. "bytes=-500");
+    # both previously crashed here (TypeError on None / AttributeError on a
+    # missing match). Fall back to serving from the start, capped below.
+    m = re.search(r"(\d+)-(\d*)", range_header) if range_header else None
+    if m:
+        g = m.groups()
+        if g[0]:
+            byte1 = int(g[0])
+        if g[1]:
+            byte2 = int(g[1])
 
     length = size - byte1
 
