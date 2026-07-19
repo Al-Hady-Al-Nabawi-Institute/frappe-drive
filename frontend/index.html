@@ -146,9 +146,12 @@
       name="theme-color"
       content="#ffffff"
     />
+    <!-- user-scalable=no removed: it blocks pinch-zoom (WCAG 1.4.4) and iOS
+         ignores it anyway. viewport-fit=cover makes env(safe-area-inset-*)
+         non-zero on notched phones — the BottomBar pads with it. -->
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
   </head>
   <body>

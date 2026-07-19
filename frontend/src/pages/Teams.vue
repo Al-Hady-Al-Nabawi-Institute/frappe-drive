@@ -1,24 +1,24 @@
 <template>
   <div
-    class="mx-auto w-full bg-surface-white dark:bg-surface-gray-2 px-4 py-8 mt-6 w-112 rounded-2xl p-6 md:shadow-2xl flex flex-col gap-4"
+    class="mx-auto w-full max-w-md bg-surface-white dark:bg-surface-gray-2 px-4 py-8 mt-6 rounded-2xl p-6 md:shadow-2xl flex flex-col gap-4"
   >
     <div class="text-sm absolute top-5 end-5 flex gap-1.5 text-ink-gray-8">
-      <LucideLogOut class="w-3 h-3 my-auto" />
+      <LucideLogOut class="w-3 h-3 my-auto rtl:rotate-180" />
       <a
         href="#"
         @click="$store.dispatch('logout')"
-      >Log out</a>
+      >{{ __("Log out") }}</a>
     </div>
     <div class="flex flex-col items-center">
       <FrappeDriveLogo class="inline-block h-12 w-12 rounded-md" />
     </div>
 
     <h2 class="font-bold text-lg text-center text-ink-gray-8">
-      Welcome, {{ $store.state.user.fullName.split(" ")[0] }}
+      {{ __("Welcome, {0}").format($store.state.user.fullName.split(" ")[0]) }}
     </h2>
     <div>
       <p class="font-semibold text-sm text-ink-gray-8 mb-1 ms-1">
-        Teams
+        {{ __("Teams") }}
       </p>
       <ul class="flex flex-col">
         <template
@@ -35,7 +35,7 @@
               >
                 <div class="flex flex-col">
                   {{ team.title }}
-                  <span class="text-xs text-ink-gray-6">{{ team.users.length }} members</span>
+                  <span class="text-xs text-ink-gray-6">{{ __("{0} members").format(team.users.length) }}</span>
                 </div>
 
                 <LucideFolderOpenDot
@@ -49,7 +49,7 @@
     </div>
     <div v-if="getInvites?.data?.length">
       <p class="font-semibold text-sm mb-3">
-        Invites
+        {{ __("Invites") }}
       </p>
       <li
         v-for="(invite, index) in getInvites?.data"
@@ -58,17 +58,21 @@
       >
         <div class="flex flex-col">
           <span class="text-md">{{ invite.team_name }}</span>
-          <span class="text-sm">{{ invite.status === "Proposed" ? "Requested" : "Sent" }} at
-            {{ formatDate(invite.creation) }}</span>
+          <span class="text-sm">{{
+            (invite.status === "Proposed"
+              ? __("Requested at {0}")
+              : __("Sent at {0}")
+            ).format(formatDate(invite.creation))
+          }}</span>
         </div>
         <div class="flex gap-2">
-          <Tooltip text="You requested an invite from this team.">
+          <Tooltip :text="__('You requested an invite from this team.')">
             <Badge
               v-if="invite.status === 'Proposed'"
               class="my-auto me-2"
               theme="orange"
             >
-              Requested
+              {{ __("Requested") }}
             </Badge>
           </Tooltip>
           <Button
@@ -99,7 +103,7 @@
                 {
                   onSuccess: (data) => {
                     if (data) window.location.replace(data)
-                    else toast('Added to the team')
+                    else toast(__('Added to the team'))
                   },
                 }
               )

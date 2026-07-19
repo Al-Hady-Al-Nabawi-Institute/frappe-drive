@@ -2,7 +2,7 @@
   <!-- pt-1 to accomodate borders -->
   <div
     v-if="rows?.length"
-    class="grid-container gap-5 p-5 pb-[60px] overflow-auto select-none"
+    class="grid-container gap-3 p-3 sm:gap-5 sm:p-5 pb-[60px] overflow-auto select-none"
   >
     <div
       v-for="file in rows"
@@ -171,8 +171,17 @@ onKeyDown("Escape", (e) => {
 <style scoped>
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  grid-auto-columns: minmax(170px, 1fr);
+  /* 150px min → two columns on 360px phones (170px forced a single
+     stretched column below 400px) */
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-auto-columns: minmax(150px, 1fr);
+}
+
+@media (min-width: 640px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    grid-auto-columns: minmax(170px, 1fr);
+  }
 }
 
 .shadow-gray {

@@ -31,14 +31,15 @@
         />
       </div>
       <div
-        class="hidden sm:flex absolute bottom-4 left-1/2 transform -translate-x-1/2 w-fit items-center justify-center p-1 gap-1 rounded shadow-xl l bg-surface-white"
+        class="flex absolute bottom-4 left-1/2 transform -translate-x-1/2 w-fit items-center justify-center p-1 gap-1 rounded shadow-xl l bg-surface-white"
       >
         <Button
           :disabled="!prevEntity?.name"
           :variant="'ghost'"
-          icon="arrow-left"
           @click="scrollEntity(true)"
-        />
+        >
+          <LucideArrowLeft class="size-4 rtl:rotate-180" />
+        </Button>
         <Button
           :variant="'ghost'"
           @click="enterFullScreen"
@@ -48,9 +49,10 @@
         <Button
           :disabled="!nextEntity?.name"
           :variant="'ghost'"
-          icon="arrow-right"
           @click="scrollEntity()"
-        />
+        >
+          <LucideArrowRight class="size-4 rtl:rotate-180" />
+        </Button>
       </div>
     </div>
   </div>
@@ -65,6 +67,8 @@ import FileRender from "@/components/FileRender.vue"
 import { createResource } from "frappe-ui"
 import { useRouter } from "vue-router"
 import LucideScan from "~icons/lucide/scan"
+import LucideArrowLeft from "~icons/lucide/arrow-left"
+import LucideArrowRight from "~icons/lucide/arrow-right"
 import { onKeyStroke } from "@vueuse/core"
 import {
   prettyData,
