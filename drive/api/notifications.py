@@ -115,9 +115,11 @@ def create_notification(from_user, to_user, type, entity, message=None):
     :param entity: drive_file name
     :param message: notification message
     """
-    from drive.api.permissions import get_user_access
+    from drive.api.permissions import _get_user_access
 
-    user_access = get_user_access(entity.name, to_user)
+    # Uses the unguarded helper on purpose: this legitimately inspects the
+    # recipient's (third-party) access to decide whether to notify them.
+    user_access = _get_user_access(entity.name, to_user)
     if user_access.get("read") == 0:
         return
 

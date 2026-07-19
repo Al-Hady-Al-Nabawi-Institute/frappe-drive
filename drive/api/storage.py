@@ -2,7 +2,7 @@ import frappe
 from pypika import functions as fn
 
 from drive.utils import default_team, get_file_type
-from drive.api.permissions import user_has_permission
+from drive.api.permissions import get_teams, user_has_permission
 
 MEGA_BYTE = 1024**2
 DriveFile = frappe.qb.DocType("Drive File")
@@ -10,6 +10,10 @@ DriveFile = frappe.qb.DocType("Drive File")
 
 @frappe.whitelist()
 def storage_breakdown(team, owned_only):
+    # Only members may see a team's storage breakdown (file names/owners/sizes);
+    # the `team` param was previously unchecked.
+    if team not in get_teams():
+        frappe.throw("You don't have access to this team.", frappe.PermissionError)
     limit = frappe.get_value("Drive Team", team, "quota" if owned_only else "storage") * MEGA_BYTE
     filters = {
         "team": team,

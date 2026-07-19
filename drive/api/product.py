@@ -319,16 +319,28 @@ def set_user_access(team, user_id, access_level):
 
 @frappe.whitelist()
 def remove_user(team, user_id):
+    # Removing a member is an admin action (matching set_user_access); the old
+    # check only required the *caller* to be any member, letting a low-access
+    # user evict admins. Also .get() the target so a bad id is a clean 404,
+    # not a KeyError 500.
+    if not is_admin(team):
+        frappe.throw("You don't have the permissions for this action.", frappe.PermissionError)
     drive_team = {k.user: k for k in frappe.get_doc("Drive Team", team).users}
-    if frappe.session.user not in drive_team:
+    member = drive_team.get(user_id)
+    if not member:
         frappe.throw("User doesn't belong to team")
-    frappe.delete_doc("Drive Team Member", drive_team[user_id].name)
+    frappe.delete_doc("Drive Team Member", member.name)
 
 
 # SECURITY: send user data with files
 @frappe.whitelist(allow_guest=True)
 @default_team
 def get_all_users(team):
+    # A specific team may only be enumerated by its own members — otherwise the
+    # `team` param let anyone read any team's member list (emails/full names).
+    # "all" is already self-scoped to get_teams() (the caller's own teams).
+    if team != "all" and team not in get_teams():
+        frappe.throw("You don't have access to this team.", frappe.PermissionError)
     teams = [team] if team != "all" else get_teams()
 
     team_users = {}

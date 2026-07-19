@@ -8,6 +8,13 @@ from drive.utils.files import FileManager
 @frappe.whitelist()
 @default_team
 def sync_preview(team, json=True):
+    # Same admin gate as sync_from_disk: this enumerates unregistered S3/disk
+    # object keys, which is admin-only information.
+    if not is_admin(team):
+        frappe.throw(
+            "You do not have permission to sync files from disk.",
+            frappe.PermissionError,
+        )
     manager = FileManager()
     files = manager.fetch_new_files(team)
     root_folder = manager.get_prefix(team)

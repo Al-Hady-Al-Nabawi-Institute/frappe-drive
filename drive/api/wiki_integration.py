@@ -10,6 +10,10 @@ def convert_pm_to_md(obj):
 
 @frappe.whitelist()
 def get_yjs_content(entity_name):
+    from drive.api.permissions import user_has_permission
+
+    if not user_has_permission(entity_name, "read"):
+        frappe.throw("You don't have access to this file.", frappe.PermissionError)
     return frappe.get_value("Drive Document", frappe.get_value("Drive File", entity_name, "document"), "content")
 
 

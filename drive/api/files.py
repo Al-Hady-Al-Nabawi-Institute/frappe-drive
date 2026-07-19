@@ -979,6 +979,12 @@ def get_entity_type(entity_name):
         ["team", "name", "mime_type", "is_group", "document"],
         as_dict=1,
     )
+    # An unknown/inactive id used to crash on `entity.document` (None); and the
+    # endpoint leaked team/mime/is_group with no access check.
+    if not entity:
+        frappe.throw("We couldn't find what you're looking for.", frappe.NotFound)
+    if not user_has_permission(entity_name, "read"):
+        frappe.throw("You don't have access to this file.", frappe.PermissionError)
     if entity.document or entity.mime_type == "text/markdown":
         entity["type"] = "document"
     elif entity.is_group:

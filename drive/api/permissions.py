@@ -50,6 +50,23 @@ def get_team_access(entity):
 @frappe.whitelist(allow_guest=True)
 def get_user_access(entity, user: str = None, team: bool = False):
     """
+    Whitelisted entry point. Probing *another* user's access is admin-only —
+    otherwise the query silently falls back to the caller (rather than leaking
+    who-can-see-what for arbitrary entity/user pairs). Trusted internal callers
+    that must inspect a third party — the permission gate itself and the
+    notification fan-out — call `_get_user_access` directly and bypass this.
+    """
+    if user and user not in (frappe.session.user, "Guest") and not team:
+        entity_doc = (
+            frappe.get_cached_doc("Drive File", entity) if isinstance(entity, str) else entity
+        )
+        if not is_admin(entity_doc.team):
+            user = frappe.session.user
+    return _get_user_access(entity, user, team)
+
+
+def _get_user_access(entity, user: str = None, team: bool = False):
+    """
     Return the user specific permissions for an entity. Toggle `team` to check team permission.
     """
     if isinstance(entity, str):
@@ -61,8 +78,6 @@ def get_user_access(entity, user: str = None, team: bool = False):
             return get_team_access(entity)
         else:
             user = frappe.session.user
-    # if not team and user not in [frappe.session.user, "Guest"] and not is_admin(entity.team):
-    #     frappe.throw("You cannot check permissions of other users", PermissionError)
 
     # Owners and team members of a file have access
     teams = get_teams(user)
@@ -70,7 +85,7 @@ def get_user_access(entity, user: str = None, team: bool = False):
     if user == entity.owner:
         access = {"read": 1, "comment": 1, "share": 1, "upload": 1, "write": 1, "type": "admin"}
     elif entity.team in teams:
-        access_level = get_access_level(entity.team)
+        access_level = get_access_level(entity.team, user)
         access = {
             "read": 1,
             "comment": 1,
@@ -106,12 +121,18 @@ def is_admin(team):
     if frappe.session.user == "Administrator":
         return True
     drive_team = {k.user: k for k in frappe.get_doc("Drive Team", team).users}
-    return drive_team[frappe.session.user].access_level == 2
+    member = drive_team.get(frappe.session.user)
+    return bool(member) and member.access_level == 2
 
 
-def get_access_level(team):
+def get_access_level(team, user=None):
+    # Must reflect the queried `user`, not the session user: get_user_access
+    # is called with a third party by the permission gate and notifications,
+    # and indexing a non-member raised KeyError (unhandled 500).
+    user = user or frappe.session.user
     drive_team = {k.user: k for k in frappe.get_doc("Drive Team", team).users}
-    return drive_team[frappe.session.user].access_level
+    member = drive_team.get(user)
+    return member.access_level if member else 0
 
 
 @frappe.whitelist()
@@ -271,7 +292,7 @@ def user_has_permission(doc, ptype, user=None, team=0):
         # Should ideally deflect to Framework
         ptype = "write"
 
-    access = get_user_access(doc, user, team)
+    access = _get_user_access(doc, user, team)
     if ptype in access:
         return bool(access[ptype])
 
