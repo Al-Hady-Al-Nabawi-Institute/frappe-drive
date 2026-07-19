@@ -18,12 +18,11 @@
 
 html {
   scrollbar-width: auto;
-  /* Nudge the whole UI up. Tailwind's text-* and icon size-* utilities are
-     rem-based (the UI is almost entirely text-base/text-sm), so a single root
-     bump enlarges type and icons together, in proportion — no per-component
-     edits. 118.75% = 19px over the 16px default (+18.75%); this one value is
-     the dial, tune to taste. */
-  font-size: 118.75%;
+  /* THE UI SIZE DIAL. Text, icons and spacing are all rem-based (text via the
+     rem fontSize scale in tailwind.config.js), so this one value scales the
+     whole app in proportion. 130% = +30% over the 16px browser default
+     (text-base ≈ 18px, was 14). Tune this number to taste. */
+  font-size: 130%;
 }
 
 *::-webkit-scrollbar-thumb {
