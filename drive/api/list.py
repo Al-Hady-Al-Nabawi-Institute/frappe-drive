@@ -4,7 +4,7 @@ import frappe
 from pypika import Criterion, CustomFunction, Order
 from pypika import functions as fn
 
-from drive.utils import MIME_LIST_MAP, default_team, get_file_type, get_home_folder
+from drive.utils import MIME_LIST_MAP, default_team, get_file_type, get_home_folder, get_teams
 from drive.utils.api import get_default_access
 
 from .permissions import ENTITY_FIELDS, get_user_access
@@ -86,9 +86,20 @@ def files(
             )
         elif shared == "public":
             cond = (DrivePermission.entity == DriveFile.name) & (DrivePermission.user == "")
-        # if shared == "with":
-        #     teams = get_teams()
-        #     cond |= (DrivePermission.team == 1) & (DrivePermission.user.isin(teams))
+        if shared == "with":
+            # Team shares store the TEAM id in DrivePermission.user with
+            # team=1 — matching only the session user misses every one of
+            # them (visible via direct URL through get_user_access, absent
+            # from this list). Include permissions granted to my teams, and
+            # drop my own files: my membership in the team the file was
+            # shared with would otherwise list it back at me.
+            user_teams = get_teams()
+            if user_teams:
+                cond = (DrivePermission.entity == DriveFile.name) & (
+                    ((DrivePermission.team == 0) & (DrivePermission.user == frappe.session.user))
+                    | ((DrivePermission.team == 1) & (DrivePermission.user.isin(user_teams)))
+                )
+            query = query.where(DriveFile.owner != frappe.session.user)
         query = query.right_join(DrivePermission).on(cond)
     else:
         query = query.left_join(DrivePermission).on(
