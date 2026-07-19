@@ -32,7 +32,7 @@
         v-if="createFolder.error"
         class="pt-4 text-base font-sm text-ink-red-3"
       >
-        {{ createFolder.error.messages[0] }}
+        {{ createFolder.error.messages?.[0] || createFolder.error.message }}
       </div>
     </template>
   </Dialog>
@@ -76,8 +76,12 @@ const createFolder = createResource({
 // Guard against double-submit: Enter on the input and the Create button both
 // call this, and `loading` only disables the button — on a slow link the
 // second trigger lands before the first response and creates the folder twice.
+// The empty-name guard matters too: the Create button is disabled when empty,
+// but Enter still reaches here → validate() returns a string → frappe-ui
+// throws a bare Error with no `.messages`, which the template's
+// `error.messages[0]` then crashes on, blanking the dialog body.
 const submit = () => {
-  if (createFolder.loading) return
+  if (createFolder.loading || !folderName.value.trim()) return
   createFolder.submit(folderName.value.trim())
 }
 </script>

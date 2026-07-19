@@ -18,9 +18,10 @@
         <Button
           class="text-ink-gray-8 absolute top-4 start-4"
           :variant="'ghost'"
-          icon="arrow-left"
           @click="closePreview"
-        />
+        >
+          <LucideArrowLeft class="size-4 rtl:rotate-180" />
+        </Button>
         <LoadingIndicator
           v-if="file.loading"
           class="w-10 h-full text-neutral-100"
@@ -110,15 +111,18 @@ function fetchFile(currentEntity) {
   })
 }
 
+// In RTL the previous item sits visually to the RIGHT, so the arrow keys map
+// to the opposite direction to keep motion aligned with the on-screen arrows.
+const isRTL = () => document.documentElement.dir === "rtl"
 onKeyStroke("ArrowLeft", (e) => {
   if (!e.shiftKey) return
   e.preventDefault()
-  scrollEntity(true)
+  scrollEntity(!isRTL())
 })
 onKeyStroke("ArrowRight", (e) => {
   if (!e.shiftKey) return
   e.preventDefault()
-  scrollEntity()
+  scrollEntity(isRTL())
 })
 
 const onSuccess = async (entity) => {

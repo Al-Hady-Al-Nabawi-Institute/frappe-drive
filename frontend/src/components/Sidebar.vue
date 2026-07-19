@@ -33,7 +33,7 @@
         :onClick="item.onClick"
         @dragover.prevent="
           ;(['Trash', 'Home'].includes(item.label) ||
-            item.to.startsWith('/t')) &&
+            item.to?.startsWith('/t')) &&
             (draggedSpace = item.label)
         "
         @dragleave="draggedSpace = null"
@@ -308,7 +308,7 @@ const handleDrop = (e, space) => {
       { entity_names: [file_name] },
       { onSuccess: () => emitter.emit("remove-file-ui", file_name) }
     )
-  } else if (space.to.startsWith("/t/")) {
+  } else if (space.to?.startsWith("/t/")) {
     const team = space.to.slice(3, -1)
     move.submit(
       { entity_names: [file_name], team },

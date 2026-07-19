@@ -429,7 +429,7 @@ const createFolder = createResource({
     }
   },
   validate(params) {
-    if (!params?.title) return false
+    if (!params?.title) return __("Folder name is required")
   },
   onSuccess(data) {
     createdNode.value.value = data.name
@@ -450,6 +450,11 @@ const createFolder = createResource({
 function openEntity(node) {
   if (props.entities[0].parent_entity === node.value) return
   if (!node.value) {
+    // Guard the inline folder-create the same way the standalone dialogs are:
+    // this is bound to @keydown.enter (key-repeat fires while held) plus the
+    // row click, so without the loading gate a held Enter spawns N parallel
+    // creates and the losers surface a misleading duplicate-name toast.
+    if (createFolder.loading) return
     createdNode.value = node
     createFolder.fetch({
       title: node.label,

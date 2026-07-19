@@ -22,7 +22,7 @@
       </p>
       <ul class="flex flex-col">
         <template
-          v-for="team in Object.values(getTeams?.data)"
+          v-for="team in Object.values(getTeams?.data ?? {})"
           :key="team.id"
         >
           <router-link
@@ -127,6 +127,11 @@ import { useRouter } from "vue-router"
 
 const router = useRouter()
 getInvites.fetch()
+// getTeams is normally primed by the Sidebar, which does not mount on /teams
+// (App.vue normalView is false here). Without this, a cold load — first login
+// on a device, or tapping the bottom-bar «Teams» tab before the cache warms —
+// renders Object.values(null) and blanks the page.
+if (!getTeams.data && !getTeams.loading) getTeams.fetch()
 
 watch(
   [getInvites, getTeams],

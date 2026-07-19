@@ -36,7 +36,7 @@
         v-if="createLink.error"
         class="pt-4 text-base font-sm text-ink-red-3"
       >
-        {{ createLink.error.messages[0] }}
+        {{ createLink.error.messages?.[0] || createLink.error.message }}
       </div>
     </template>
   </Dialog>
@@ -82,9 +82,10 @@ const createLink = createResource({
 })
 
 // Guard against double-submit (Enter + button on a slow link) — same bug as
-// NewFolderDialog.
+// NewFolderDialog. The empty-title guard also avoids validate() throwing a
+// bare Error that the template's error.messages[0] crashes on.
 const submit = () => {
-  if (createLink.loading) return
+  if (createLink.loading || !title.value.trim()) return
   createLink.submit()
 }
 </script>

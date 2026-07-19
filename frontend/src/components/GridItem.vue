@@ -28,7 +28,7 @@
       class="overflow-hidden text-ellipsis whitespace-nowrap h-full w-[calc(100%-1rem)] object-cover rounded-t-[calc(theme(borderRadius.lg)-1px)] py-2"
     >
       <div
-        class="prose prose-sm pointer-events-none scale-[.39] ms-0 origin-top-left"
+        class="prose prose-sm pointer-events-none scale-[.39] ms-0 origin-top-left rtl:origin-top-right"
         v-html="getThumbnail.data"
       />
     </div>
