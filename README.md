@@ -1,3 +1,32 @@
+> ## ⛔ ARCHIVED 2026-08-15 — our fork, read-only. Not upstream's archival.
+>
+> This is **معهد الهدي النبوي**'s maintenance fork of Frappe Drive. It served
+> **Module 14 (the staff document store)** at `/drive` on the institute portal. That
+> portal is gone: Frappe was dropped entirely on 2026-07-31 and the Hetzner VPS was
+> terminated 2026-08-05, so this app has no host and is installed nowhere.
+>
+> **Module 14 itself is NOT decided.** Archiving this fork closes the *implementation*,
+> not the requirement — the institute still has no staff document store, and choosing
+> one (a small module in the SIS, or a third-party service) is an open decision.
+>
+> **Nothing is stranded.** The S3 backend (Hetzner Object Storage bucket
+> `alhady-frappe-drive`, `fsn1` — a separate product from Cloud servers, so it outlived
+> the box) was checked on 2026-08-15 and holds **two zero-byte folder markers and no
+> files at all**. No staff document was ever stored through this app. Whatever replaces
+> it starts from an empty slate, not from a migration.
+>
+> **What is in here that is ours:** 17 commits on `main` (see `git log develop..main`) —
+> authorization fixes (IDOR/leak endpoints, admin gating), an RTL pass driven by
+> `User.language` rather than Accept-Language, dialog double-submit guards, a mobile
+> layout, and a UI-scale series. Arabic strings shipped through `institute-core`'s
+> translation pipeline (also archived), never in this fork.
+>
+> `develop` holds **upstream's final `develop`** (249 commits ahead of our `main`) — kept
+> as a cherry-pick source, including the security candidates flagged in the infra
+> changelog for 2026-07-18. Those were **never applied**. Upstream `frappe/drive` was
+> archived by Frappe on 2026-07-01 and folded into `frappe/suite`; it remains public and
+> readable, so this branch is a convenience copy, not the only one.
+
 <div align="center">
   <a href="https://frappe.io/products/drive">
     <img src=".github/new_logo.svg" height="80" width="80" alt="Frappe Drive Logo">
